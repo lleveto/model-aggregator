@@ -1,30 +1,33 @@
-//This is a simple helper function designed to get the percentile of a given z-score (standardized value)
-module.exports = {
-   getZPercent: function(z) {
-	    //z == number of standard deviations from the mean
-	    //if z is greater than 6.5 standard deviations from the mean
-	    //the number of significant digits will be outside of a reasonable 
-	    //range
-	    if ( z < -6.5)
-	      return 0;
-	    if( z > 6.5) 
-	      return 100;
+// This function calculates the percentile for a given z-score (standardized value)
+function getZPercent(z) {
+    // If z is too extreme, return 0% or 100% to avoid precision errors
+    if (z < -6.5) return 0;
+    if (z > 6.5) return 100;
 
-	    var factK = 1;
-	    var sum = 0;
-	    var term = 1;
-	    var k = 0;
-	    var loopStop = Math.exp(-23);
-	    while(Math.abs(term) > loopStop) 
-	    {
-	      term = .3989422804 * Math.pow(-1,k) * Math.pow(z,k) / (2 * k + 1) / Math.pow(2,k) * Math.pow(z,k+1) / factK;
-	      sum += term;
-	      k++;
-	      factK *= k;
+    let factK = 1;
+    let sum = 0;
+    let term = 1;
+    let k = 0;
+    const loopStop = Math.exp(-23); // Threshold for stopping loop due to insignificant changes
 
-	    }
-	    sum += 0.5;
+    while (Math.abs(term) > loopStop) {
+        term =
+            0.3989422804 *
+            Math.pow(-1, k) *
+            Math.pow(z, k) /
+            (2 * k + 1) /
+            Math.pow(2, k) *
+            Math.pow(z, k + 1) /
+            factK;
 
-	    return sum*100;
-	}
+        sum += term;
+        k++;
+        factK *= k;
+    }
+
+    sum += 0.5; // Adjust for cumulative probability
+    return sum * 100;
 }
+
+// Export the function as a module
+module.exports = { getZPercent };
