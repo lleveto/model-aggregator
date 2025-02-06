@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "^1.7.9",
     "csv-parser": "^3.2.0",
+    "fantasydata-node-client": "^1.8.2",
     "mathjs": "^14.2.0",
     "model-aggregator": "file:"
   }

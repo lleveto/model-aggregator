@@ -1,0 +1,40 @@
+const FantasyDataClient = require('fantasydata-node-client');
+const fs = require('fs');
+
+// Initialize the FantasyDataClient with your API keys
+const keys = {
+    'NCAABv3ScoresClient': 'YOUR_NCAAB_API_KEY'
+};
+const client = new FantasyDataClient(keys);
+
+// Function to fetch actual game results
+async function fetchGameResults(date) {
+    try {
+        const results = await client.NCAABv3ScoresClient.getGamesByDatePromise(date);
+        return results;
+    } catch (error) {
+        console.error('Error fetching game results:', error);
+        return [];
+    }
+}
+
+// Function to compare predictions with actual results
+function comparePredictions(predictions, actualResults) {
+    // Implement your comparison logic here
+    // For each prediction, find the corresponding actual result and compare
+}
+
+// Main function
+async function main() {
+    // Load your model's predictions
+    const predictions = JSON.parse(fs.readFileSync('path_to_your_predictions.json', 'utf8'));
+
+    // Fetch actual game results for the desired date
+    const date = '2025-02-05'; // Example date
+    const actualResults = await fetchGameResults(date);
+
+    // Compare predictions with actual results
+    comparePredictions(predictions, actualResults);
+}
+
+main();
